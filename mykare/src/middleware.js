@@ -10,4 +10,12 @@ export function middleware(request) {
             return NextResponse.redirect(loginUrl);
         }
     }
+
+    if (path.endsWith('/admin')) {
+        const cookie = request.cookies.get('admin-session');
+        if (!cookie) {
+            const loginUrl = new URL('/login/', request.url);
+            return NextResponse.redirect(loginUrl);
+        }
+    }
 }

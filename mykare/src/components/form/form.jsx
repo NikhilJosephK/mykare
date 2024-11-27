@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { usePathname, useRouter } from "next/navigation";
+import { PageTypeContext } from "@context";
+import { useContext } from "react";
 
 let key = 0;
 let obj = {};
@@ -25,7 +27,26 @@ export function Form({ title }) {
     resolver: yupResolver(schema),
   });
 
+  const { setPageType } = useContext(PageTypeContext);
+
   function onSubmit(data) {
+    if (path === "/registration" && data.email.includes("admin")) {
+      return;
+    }
+
+    if (
+      path === "/login" &&
+      data.email.includes("admin") &&
+      data.password.includes("admin")
+    ) {
+      const adminProfileInfo = JSON.stringify({
+        email: "admin@gmail.com",
+        password: "admin",
+      });
+      document.cookie = `admin-session=${adminProfileInfo}`;
+      router.push("/admin");
+    }
+
     let getUserList;
     if (localStorage.getItem("mk-user")) {
       getUserList = JSON.parse(localStorage.getItem("mk-user"));
@@ -35,6 +56,7 @@ export function Form({ title }) {
         return item.email === data.email;
       });
       if (path === "/registration" && isRegistered) {
+        setPageType("Registered");
         return;
       } else if (
         path === "/login" &&
@@ -43,7 +65,6 @@ export function Form({ title }) {
       ) {
         const userProfileInfo = JSON.stringify(data);
         document.cookie = `session=${userProfileInfo}`;
-        sessionStorage.setItem("session", userProfileInfo);
         router.push("/profile");
         return;
       } else if (
@@ -51,10 +72,11 @@ export function Form({ title }) {
         (isRegistered?.email !== data?.email ||
           isRegistered?.password !== data?.password)
       ) {
+        setPageType("invalid");
         return;
       }
     }
-
+    setPageType("New User");
     key++;
     obj = { ...getUserList };
     obj[key] = { ...data };

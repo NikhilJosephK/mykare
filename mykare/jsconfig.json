@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-     "@components": ["./src/components/index.js"],
+      "@components": ["./src/components/index.js"],
+      "@context": ["./src/context/index.js"]
     }
   }
 }
