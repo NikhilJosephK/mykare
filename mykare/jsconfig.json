@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "baseUrl": "./",
     "paths": {
       "@components": ["./src/components/index.js"],
-      "@context": ["./src/context/index.js"]
+      "@context": ["./src/context/index.js"],
+      "@components/*": ["./components/*"],
+      "@/components/*": ["components/*"]
     }
   }
 }

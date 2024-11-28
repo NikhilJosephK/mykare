@@ -1,10 +1,16 @@
 import { cookies } from "next/headers";
 import Button from "./button";
 
-export default async function Profile() {
-  const cookieStore = await cookies();
-  const myCookie = JSON.parse(cookieStore.get("session").value);
-  const userName = myCookie.email.slice(0, myCookie.email.indexOf("@"));
+export default function Profile() {
+  const cookieStore = cookies();
+  const sessionCookie = cookieStore.get("session");
+
+  let userName = "user";
+  if (sessionCookie) {
+    const myCookie = JSON.parse(sessionCookie.value);
+    userName = myCookie.email.slice(0, myCookie.email.indexOf("@"));
+  }
+
   return (
     <div className="h-screen w-screen">
       <div className="bg-indigo-700 w-full h-full p-28 flex items-center justify-center">

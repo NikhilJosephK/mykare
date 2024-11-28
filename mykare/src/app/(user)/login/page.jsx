@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@components";
+import { Form } from "../../../components/form";
 import { PageTypeContext } from "@context";
 import { useContext } from "react";
 
