@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import Button from "./button";
 
-export default function Profile() {
-  const cookieStore = cookies();
+export default async function Profile() {
+  const cookieStore = await cookies();
   const myCookie = JSON.parse(cookieStore.get("session").value);
   const userName = myCookie.email.slice(0, myCookie.email.indexOf("@"));
   return (
