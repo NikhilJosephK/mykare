@@ -1,9 +1,10 @@
 "use client";
 
 export default function Admin() {
-  const resgiteredUserDetails = localStorage.getItem("mk-user")
-    ? Object.values(JSON.parse(localStorage.getItem("mk-user")))
-    : [];
+  const resgiteredUserDetails =
+    typeof window !== "undefined" && localStorage.getItem("mk-user")
+      ? Object.values(JSON.parse(localStorage.getItem("mk-user")))
+      : [];
 
   return (
     <section>

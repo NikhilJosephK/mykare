@@ -55,19 +55,25 @@ export function Form({ title }) {
       let isRegistered = userEmailList.find((item) => {
         return item.email === data.email;
       });
+
       if (path === "/registration" && isRegistered) {
         setPageType("Registered");
         return;
-      } else if (
+      }
+
+      if (
         path === "/login" &&
         isRegistered?.email === data?.email &&
-        isRegistered?.password === data?.password
+        isRegistered?.password === data?.password &&
+        (data?.email !== "admin@gmail.com" || data?.password !== "admin")
       ) {
         const userProfileInfo = JSON.stringify(data);
         document.cookie = `session=${userProfileInfo}`;
         router.push("/profile");
         return;
-      } else if (
+      }
+
+      if (
         path === "/login" &&
         (isRegistered?.email !== data?.email ||
           isRegistered?.password !== data?.password) &&
@@ -77,12 +83,15 @@ export function Form({ title }) {
         return;
       }
     }
-    setPageType("New User");
-    key++;
-    obj = { ...getUserList };
-    obj[key] = { ...data };
-    const user = JSON.stringify(obj);
-    localStorage.setItem("mk-user", user);
+
+    if (path === "/registration") {
+      setPageType("New User");
+      key++;
+      obj = { ...getUserList };
+      obj[key] = { ...data };
+      const user = JSON.stringify(obj);
+      localStorage.setItem("mk-user", user);
+    }
   }
 
   return (
